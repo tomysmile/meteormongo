@@ -1,0 +1,882 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"lib",
+				"libicu-dev"
+			],
+			[
+				"true",
+				"fs.truncateSync(fd, len);"
+			],
+			[
+				"createH",
+				"crypto.createHmac(hmac, key);"
+			],
+			[
+				"mongo",
+				"mongoMessage"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "Vagrantfile",
+			"settings":
+			{
+				"buffer_size": 670,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#!/bin/bash\n#\n\nif ! test -f .updated_apt_get; then\n  # Add repo for mongo db\n  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10\n  echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/10gen.list\n\n  echo 'Updating and installing ubuntu packages...'\n  # Do actual update packages\n  apt-get -y update\n\n  touch .updated_apt_get\nfi\n\nif ! test -f .updated_tools_v1; then\n  echo 'Installing supporting tools...'\n  apt-get -y install git curl build-essential\n\n  touch .updated_tools_v1\nfi\n\n# Install mongodb\ndpkg -s mongodb-org &>/dev/null || {\n  apt-get -y install mongodb-org=2.6.6 mongodb-org-server=2.6.6 mongodb-org-shell=2.6.6 mongodb-org-mongos=2.6.6 mongodb-org-tools=2.6.6\n\n  rm -rf /etc/mongod.conf\n  cp -r  /vagrant/config/mongodb.config /etc/mongod.conf\n\n  service mongod restart\n}\n\n# Set running user\nrun_env=$1\nrun_as_user=$2\n\n# Install NodeJS via NVM\nif ! test -f .updated_nvm_v1; then\n  echo \"Installing Node via NVM...\"\n  export HOME=/home/$run_as_user\n  git clone https://github.com/creationix/nvm.git ~/.nvm && cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`\n\n  echo \"source ~/.nvm/nvm.sh\" >> /home/$run_as_user/.bashrc\n  source /home/$run_as_user/.nvm/nvm.sh\n\n  #nvm install 0.8\n  nvm install 0.10\n  #nvm install 0.11\n  nvm use stable\n\n  # Set Environment Varaibles\n  echo \"Setting environment variables...\"\n  echo \"export NODE_ENV=$run_env\" >> /home/$run_as_user/.bashrc\n  echo \"cd /$run_as_user\" >> /home/$run_as_user/.bashrc\n\n  # NPM package install\n  echo \"Installing NPM packages...\"\n  echo \"PATH=$PATH:/$run_as_user/node_modules/.bin\" >> /home/$run_as_user/.bashrc\n  PATH=$PATH:/$run_as_user/node_modules/.bin\n  cd /$run_as_user && rm -rf node_modules\n  [ -f package.json ] && npm install\n\n  touch .updated_nvm_v1\nfi\n\nif ! test -f .updated_node_tools_v1; then\n  echo 'Installing grunt-cli, bower ...'\n  npm install -g grunt-cli bower\n\n  touch .updated_node_tools_v1\nfi\n\n# Install meteor\ncommand -v meteor &>/dev/null || {\n  echo \"Installing meteor...\"\n  sudo -u $run_as_user -i sh -c 'curl https://install.meteor.com/ | sh'\n}\n\n# Set Git global Variables\nsource \"config/gitid.config\"\necho \"Git global username: ${user}\"\necho \"Git global email : ${email}\"\ngit config –-global user.name \"${user}\"\ngit config –-global user.email ${email}\n\n\n# Clean up permissions\nchown -R $run_as_user:$run_as_user /home/$run_as_user/.nvm\n\n# Reset back\nexport HOME=/home/root\n",
+			"settings":
+			{
+				"buffer_size": 2459,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "provision.sh",
+			"settings":
+			{
+				"buffer_size": 2160,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 646,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 247.0,
+		"selected_items":
+		[
+			[
+				"vagra",
+				"Vagrant: Status"
+			],
+			[
+				"vag",
+				"Vagrant: Init"
+			],
+			[
+				"fet",
+				"Fetch: Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"task",
+				"Tasks: Open URL"
+			],
+			[
+				"invok",
+				"Snippet: immediately-invoked function expression"
+			],
+			[
+				"ano",
+				"Snippet: anonymous function"
+			],
+			[
+				"java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"gist",
+				"Gist: Create Public Gist"
+			],
+			[
+				"css",
+				"Set Syntax: CSS"
+			],
+			[
+				"html",
+				"Set Syntax: HTML5"
+			],
+			[
+				"html5",
+				"Set Syntax: HTML5"
+			],
+			[
+				"linterror",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"lint",
+				"SublimeLinter: Lint Current File"
+			],
+			[
+				"subl",
+				"SublimeLinter: Show Error List"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"fe",
+				"Fetch: Package"
+			],
+			[
+				"",
+				"Fetch: Manage"
+			],
+			[
+				"fetc",
+				"Fetch: Manage"
+			],
+			[
+				"bs3",
+				"Snippet: bs3-cdn"
+			],
+			[
+				"jq",
+				"Snippet: Google AJAX Libraries: jQuery"
+			],
+			[
+				"ht",
+				"Set Syntax: HTML5"
+			],
+			[
+				"aut",
+				"Autoprefix CSS"
+			],
+			[
+				"prefix",
+				"Autoprefix CSS"
+			],
+			[
+				"bs3row",
+				"Snippet: bs3-row"
+			],
+			[
+				"javas",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"lore",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"pupp",
+				"Set Syntax: Puppet"
+			],
+			[
+				"giti",
+				"Gitignore: New gitignore"
+			],
+			[
+				"ed",
+				"Set Syntax: EditorConfig"
+			],
+			[
+				"gi",
+				"Gitignore: New gitignore"
+			],
+			[
+				"editor",
+				"Set Syntax: EditorConfig"
+			],
+			[
+				"json",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: inst",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 293.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/tomysmile/dev/playground/meteordemo/config/mongodb.config",
+		"/Users/tomysmile/dev/playground/meteordemo/provision.sh",
+		"/Users/tomysmile/dev/playground/meteordemo/config/gitid.config",
+		"/Users/tomysmile/dev/playground/meteordemo/setgit.sh",
+		"/Users/tomysmile/dev/playground/meteordemo/Vagrantfile",
+		"/Users/tomysmile/dev/playground/meteordemo/meteordemo.sublime-workspace",
+		"/Users/tomysmile/dev/playground/meteordemo/.gitattributes",
+		"/Users/tomysmile/dev/playground/meteordemo/.editorconfig",
+		"/var/folders/jc/7x3vlr4x5mq21d6frvk3qcvh0000gn/T/gistfile1.js",
+		"/Users/tomysmile/Library/Application Support/Sublime Text 2/Packages/User/Fetch.sublime-settings",
+		"/Users/tomysmile/Library/Application Support/Sublime Text 2/Packages/Gist/README.md",
+		"/Users/tomysmile/Library/Application Support/Sublime Text 2/Packages/User/JavaScript/javascript-common.sublime-snippet",
+		"/Users/tomysmile/dev/repo/vagrant/mongodbdev/Vagrantfile",
+		"/Users/tomysmile/dev/repo/vagrant/mongodbdev/manifests/default.pp",
+		"/Users/tomysmile/dev/repo/vagrant/mongodbdev/loadzips.sh",
+		"/Users/tomysmile/dev/repo/vagrant/mongodb/manifests/standalone.pp",
+		"/Users/tomysmile/dev/repo/vagrant/mongodb/.gitignore",
+		"/Users/tomysmile/dev/repo/vagrant/mongodbdev/.gitignore",
+		"/Users/tomysmile/dev/repo/vagrant/mongodb/Vagrantfile",
+		"/Users/tomysmile/dev/repo/ubuntu1404-mongodb26/manifests/default.pp",
+		"/Users/tomysmile/dev/repo/ubuntu1404-mongodb26/Vagrantfile",
+		"/Users/tomysmile/dev/repo/vagrant/mongodb/loadzips.sh",
+		"/Volumes/Public/dev/vm/vagrantbox/README",
+		"/Users/tomysmile/dev/repo/vagrant/mongodb/standalone.pp",
+		"/Users/tomysmile/dev/repo/vagrant/mongodb/.gitattributes",
+		"/Users/tomysmile/dev/repo/vagrant/mongodb/.editorconfig",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/.gitignore",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/Vagrantfile",
+		"/Users/tomysmile/Dropbox/Dev/AWS/AccessKey/users.txt",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/AWS_README.md",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/provision.sh",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/upstart/myhubot.conf",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/node_modules/hubot-scripts/src/scripts/ping.coffee",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/upstart/myhubot.dev.override",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/upstart/myhubot.prod.override",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/bin/hubot.cmd",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/bin/hubot",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/node_modules/hubot/src/response.coffee",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/scripts/example.coffee",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/hubot-scripts.json",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/external-scripts.json",
+		"/Users/tomysmile/Dropbox/Dev/AWS/AccessKey/IAM_tomysmile.txt",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/upstart/myhubot.conf",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/package.json",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/myhubot/Procfile",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/.editorconfig",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/.gitattributes",
+		"/Users/tomysmile/dev/repo/vagrant/nginx/Vagrantfile",
+		"/Users/tomysmile/dev/repo/vagrant/nginx/provision.sh",
+		"/Users/tomysmile/dev/repo/vagrant/hubot/.gitignore..editorconfig",
+		"/Users/tomysmile/dev/repo/vagrant/nginx/.gitignore",
+		"/Users/tomysmile/dev/repo/vagrant/nginx/www/index.html",
+		"/Users/tomysmile/dev/repo/vagrant/nginx/sites-enabled/default",
+		"/Users/tomysmile/dev/repo/vagrant/ubuntu/.editorconfig",
+		"/Users/tomysmile/Documents/AWS_Links",
+		"/Users/tomysmile/Documents/AWS Notes",
+		"/Users/tomysmile/Downloads/bootstrap-elb.sh",
+		"/Users/tomysmile/Downloads/cloudformation-qwlab.template",
+		"/Users/tomysmile/Dropbox/Private/Personal/Documents/CVs/Tell me about yourself.txt",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/config/passport.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/config/mongoose.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/app/account/mvIdentity.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/config/routes.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/includes/currentUser.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/includes/layout.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/app/account/navbar-login.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/bower.json",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/includes/scripts.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/app/account/mvNavBarLoginCtrl.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/app/account/mvAuth.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/package.json",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/config/express.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/css/site.styl",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/views/index.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/app/main/main.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/config/config.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/views/partials/navbar-login.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/views/partials/main.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/views/partials/featured-courses.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/views/partials/new-courses.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/app/main/mvMainCtrl.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/server/views/partials/main/main.jade",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/app/app.js",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/public/css/site.css",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/Procfile",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/.gitignore",
+		"/Users/tomysmile/Library/Application Support/Sublime Text 2/Packages/Pretty JSON/Pretty JSON.sublime-settings",
+		"/Users/tomysmile/dev/repo/nodejs/MEANAppsFiles/bootstrap.css",
+		"/Users/tomysmile/dev/repo/nodejs/MEANAppsFiles/favicon.ico",
+		"/Users/tomysmile/dev/playground/nodejs/multivision/.bowerrc",
+		"/Users/tomysmile/Library/Application Support/Sublime Text 2/Packages/Nodejs/Nodejs.sublime-settings",
+		"/Users/tomysmile/dev/repo/nodejs/MEANAppsFiles/README.md",
+		"/Users/tomysmile/dev/repo/nodejs/MEANAppsFiles/package.json",
+		"/Users/tomysmile/dev/repo/nodejs/MEANAppsFiles/bower.json",
+		"/Users/tomysmile/dev/android/bundle/adt-bundle-mac-x86_64-20140624.txt"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"net.http",
+			"net.http.RESTInterfaceEnabled",
+			"rest",
+			"/vagrant",
+			"2.6.1",
+			"jeff",
+			"mongodbdev",
+			"mongodbsrv",
+			"mongodbserver",
+			"standalone",
+			"update",
+			"the",
+			"Monggo",
+			"Pasung",
+			"Lorem",
+			"bucket",
+			"Associatio",
+			"Cloud Formation",
+			"Conditions",
+			"64",
+			"256",
+			"user_vpc"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "Vagrantfile",
+					"settings":
+					{
+						"buffer_size": 670,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								607,
+								607
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"settings":
+					{
+						"buffer_size": 2459,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1792,
+								1529
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 503.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "provision.sh",
+					"settings":
+					{
+						"buffer_size": 2160,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/ShellScript/Shell-Unix-Generic.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 617.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": ".gitignore",
+					"settings":
+					{
+						"buffer_size": 646,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 38.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				".gitign",
+				"mongodb/.gitignore"
+			],
+			[
+				"gitig",
+				"mongodbdev/.gitignore"
+			],
+			[
+				"sta",
+				"mongodb/manifests/standalone.pp"
+			],
+			[
+				"loadzip",
+				"mongodbdev/loadzips.sh"
+			],
+			[
+				"script",
+				"server/includes/scripts.jade"
+			],
+			[
+				"navbar",
+				"public/app/account/navbar-login.jade"
+			],
+			[
+				"mvide",
+				"public/app/account/mvIdentity.js"
+			],
+			[
+				"mvaut",
+				"public/app/account/mvAuth.js"
+			],
+			[
+				"routes",
+				"server/config/routes.js"
+			],
+			[
+				"layo",
+				"server/includes/layout.jade"
+			],
+			[
+				"mva",
+				"public/app/account/mvAuth.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/tomysmile/Documents/vagrant-dev.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 162.0,
+	"status_bar_visible": true
+}
